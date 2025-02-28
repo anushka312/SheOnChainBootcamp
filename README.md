@@ -82,4 +82,9 @@ EduHub aims to revolutionize the education system by introducing decentralized c
 
 This project is licensed under the MIT License.
 
+## Addresses
+on Sepolia Testnet:
+- NFTMarketplace deployed at: 0xe5d9Be1FA4196E62A4e95Aef9C836469B69C0c1a
+- Certificate deployed at: 0x6a528b6E9E2C9dBb97140ACa1c13eC8442203b62
+
 
