@@ -2,26 +2,69 @@
 pragma solidity ^0.8.19;
 
 contract Certificate {
-    mapping(address => uint8[]) public certificateIds;
+    address public owner;
 
-    function generateCertificate(string memory _certificateId) 
-        external returns (uint8) 
-    {   
-        require(bytes(_certificateId).length > 1, "Invalid ID");
+    struct CertificateData {
+        string certificateId;
+        string recipientName;
+        string courseName;
+        string issuer;
+        uint256 issueDate;
+        uint256 expiryDate;
+        bool revoked;
+    }
 
-        
-        uint8 newCertID = uint8(uint256(keccak256(abi.encodePacked(_certificateId, msg.sender))) %256);
+    mapping(uint8 => CertificateData) public certificates;
+    mapping(string => bool) private existingCertificates; 
 
-        
-        for (uint i = 0; i < certificateIds[msg.sender].length; ++i) {
-            if (certificateIds[msg.sender][i] == newCertID) {
-                revert("Certificate with this ID already exists");
-            }
-        }
+    event CertificateIssued(address indexed recipient, uint8 certId);
+    event CertificateRevoked(uint8 certId);
 
-        
-        certificateIds[msg.sender].push(newCertID);
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not authorized");
+        _;
+    }
 
-        return newCertID;
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function issueCertificate(
+        uint8 _certId,
+        string memory _certificateId,
+        string memory _recipientName,
+        string memory _courseName,
+        string memory _issuer,
+        uint256 _issueDate,
+        uint256 _expiryDate
+    ) external onlyOwner {
+        require(!existingCertificates[_certificateId], "Certificate ID already exists");
+        require(certificates[_certId].issueDate == 0, "Certificate already issued");
+
+        certificates[_certId] = CertificateData(
+            _certificateId,
+            _recipientName,
+            _courseName,
+            _issuer,
+            _issueDate,
+            _expiryDate,
+            false
+        );
+        existingCertificates[_certificateId] = true;
+
+        emit CertificateIssued(msg.sender, _certId);
+    }
+
+    function revokeCertificate(uint8 _certId) external onlyOwner {
+        require(certificates[_certId].issueDate != 0, "Certificate does not exist");
+        require(!certificates[_certId].revoked, "Certificate already revoked");
+
+        certificates[_certId].revoked = true;
+
+        emit CertificateRevoked(_certId);
+    }
+
+    function verifyCertificate(uint8 _certId) external view returns (bool) {
+        return certificates[_certId].issueDate != 0 && !certificates[_certId].revoked;
     }
 }

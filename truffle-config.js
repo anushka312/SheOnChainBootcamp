@@ -9,8 +9,8 @@ module.exports = {
         process.env.URL
       ),
       network_id: 11155111,  
-      gas: 1000000,
-      gasPrice: 1000000000000, 
+      gas: 5000000,
+      gasPrice: 20000000000, 
       networkCheckTimeout: 10000,
       confirmations: 2,      
       timeoutBlocks: 200,    
