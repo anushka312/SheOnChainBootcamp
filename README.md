@@ -34,8 +34,8 @@ EduHub aims to revolutionize the education system by introducing decentralized c
 #### 1. Clone the Repository
 
 ```bash
- git clone https://github.com/yourusername/EduHub.git
- cd EduHub
+ git clone https://github.com/anushka312/EduHub.git
+ cd dApp
 ```
 
 #### 2. Install Dependencies
@@ -53,23 +53,10 @@ EduHub aims to revolutionize the education system by introducing decentralized c
 #### 4. Deploy Contracts (Local Development)
 
 ```bash
- truffle develop  # Start a local blockchain
- migrate --reset  # Deploy contracts
+ truffle migrate --network sepolia
 ```
 
-#### 5. Run the Frontend
 
-```bash
- cd client
- npm install  # or yarn install
- npm start  # Start the frontend
-```
-
-#### 6. Interacting with the Platform
-
-- Connect your MetaMask wallet to the correct network.
-- Use the UI to generate certificates and list educational NFTs.
-- View and purchase tokenized courses.
 
 ## Smart Contract Overview
 
